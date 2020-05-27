@@ -130,8 +130,93 @@ def product_number_recursive(a, b):
         return 0
     else:
         return b + product_number_recursive(a-1, b)
-print(product_number_iterate(x, y))
-print(product_number_recursive(x, y))
+# print(product_number_iterate(x, y))
+# print(product_number_recursive(x, y))
 # ================================================================
 
 # Look and say sequence
+# 1
+# 11
+# 21
+# 1211
+# 111221
+# 312211
+
+def next_number(s):
+    result = ''
+    i = 0
+    while i < len(s):
+        count = 1
+        while (i + count < len(s)) and (s[i + count] == s[i]):
+            count += 1
+        result = result + (str(count) + s[i])
+        i = i + count
+    return result
+
+def next_number_sequence(begin, levels):
+    for i in range(levels):
+        # print(begin)
+        begin = next_number(begin)
+next_number_sequence('1', 10)
+# ==============================================================
+
+# Spreadsheet encoding
+def spread_encode(in_str):
+    result = ''
+    str_len = len(in_str)
+    start = ord('A') - 1
+    for i in range(str_len):
+        if i < str_len - 1:
+            result += str( (ord(in_str[i].upper()) - start) * (26**(str_len-i-1) )) + '+'
+        else:
+            result += str( (ord(in_str[i].upper()) - start) * (26**(str_len-i-1) ))
+    return eval(result)
+# --------------------------------------------------------
+# simpler version
+def spread_encode_simple(in_str):
+    str_len = len(in_str)
+    start = ord('A') - 1
+    num = 0
+    for i in range(str_len):
+        num += (ord(in_str[i].upper()) - start) * (26**(str_len-i-1) )
+    return num
+
+# print(spread_encode_simple('A'))
+# print(spread_encode_simple('AA'))
+# print(spread_encode_simple('ZZ'))
+# ========================================================================
+
+# Is Palindrome
+def is_palindrome(in_srt):
+    return in_srt == in_srt[::-1]
+# ------------------------------------
+# ignore case
+def is_palindrome_ignore(in_str):
+    s = ''.join([i for i in in_str if i.isalnum()]).replace(' ', '').lower()
+    return s == s[::-1]
+
+# print(is_palindrome_ignore('ana'))
+# print(is_palindrome_ignore('banana'))
+# print(is_palindrome_ignore('Was it a cat I saw?'))
+# --------------------------------------------------------------
+# less iteration
+def is_palindrome_less(in_st):
+    i = 0
+    j = len(in_st) - 1
+    
+    while i < j:
+        while not in_st[i].isalnum() and i < j:
+            i += 1
+        while not in_st[j].isalnum() and i < j:
+            j -= 1
+        if in_st[i].lower() != in_st[j].lower():
+            return False
+        i += 1
+        j -= 1
+    return True
+# print(is_palindrome_less('Was it a cat I saw?'))
+# print(is_palindrome_less('banana'))
+# print(is_palindrome_less('ana'))
+# ==================================================================
+
+# Check if is anagram
