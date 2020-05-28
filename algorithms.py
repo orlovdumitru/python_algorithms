@@ -486,5 +486,151 @@ def find_fixed_point_binary(ar):
 # print(find_fixed_point_binary(a3))
 # ======================================================================
 
+a1 = [1, 2, 3, 4, 5, 4, 3, 2, 1]
+a2 = [1, 2, 3, 4, 1]
+a3 = [1, 6, 5, 4, 3, 2, 1]
 # Find Bitonic Peak
+def find_highest_number(ar):
+    low = 0
+    high = len(ar) - 1
 
+    if len(ar) < 3:
+        return None
+    while low <= high:
+        mid = (low + high) // 2
+        mid_left = ar[mid - 1] if mid - 1 > 0 else float('-inf')
+        mid_right = ar[mid + 1] if mid + 1 < len(ar) else float('inf')
+
+        if mid_left < ar[mid] and mid_right > ar[mid]:
+            low = mid + 1
+        elif mid_left > ar[mid] and mid_right < ar[mid]:
+            high = mid - 1
+        elif mid_left < ar[mid] and mid_right < ar[mid]:
+            return ar[mid]
+    return None
+# print(find_highest_number(a1))
+# print(find_highest_number(a2))
+# print(find_highest_number(a3))
+# =========================================================================
+
+a = [-14, -10, 2, 108, 108, 243, 285, 285, 285, 401]
+target = 285
+# find first entry in list with duplicate
+def find_first_idx(ar, target):
+    low = 0
+    high = len(ar) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+
+        if ar[mid] < target:
+            low = mid + 1
+        elif ar[mid] > target:
+            high = mid - 1
+        else:
+            if mid - 1 < 0:
+                return mid
+            if ar[mid - 1] != target:
+                return mid
+            else:
+                high = mid - 1
+    return -1
+# print(find_first_idx(a, target))
+# ==============================================================
+
+# Python bisect method
+import bisect
+a = [-14, -10, 2, 108, 108, 243, 285, 285, 285, 401]
+# print(bisect.bisect_left(a, -10)) # first ocurance form left
+# print(bisect.bisect_right(a, -10)) # first ocurance form right
+# print(bisect.bisect_left(a, 285))# first ocurance form left
+# print(bisect.bisect_right(a, 285)) # first ocurance form right
+# print(bisect.bisect(a, 285)) # short fro bisect right
+# -------------------------------------------------------------------------
+# print(a)
+bisect.insort_left(a, 108)
+bisect.insort_right(a, 108)
+bisect.insort_right(a, 285)
+# print(a)
+# =====================================================================
+
+# Interget Square root
+k = 12
+def interger_square_root(val):
+    low = 0
+    high = val
+
+    while low <= high:
+        mid = (low + high) // 2
+        mid_squared = mid * mid
+        if mid_squared < val:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return low - 1
+# print(interger_square_root(k))
+# ==================================================================
+
+# Cyclically shifted array
+a = [4, 5, 6, 7, 1, 2, 3]
+
+def find_binary(ar):
+    low = 0
+    high = len(ar) - 1
+
+    while low < high:
+        mid = (low + high) // 2
+        if ar[mid] > a[high]:
+            low = mid + 1
+        elif ar[mid] <= a[high]:
+            high = mid
+    return low
+
+# print(find_binary(a))
+# idx = find_binary(a)
+# print(a[idx])
+# ==========================================================================
+
+# Convert number to string without using str()
+def int_to_str(input_int: int) -> str:
+    if input_int < 0:
+        is_negative = True
+        input_int *= -1
+    else:
+        is_negative = False
+    
+    output_str = []
+    while input_int > 0:
+        output_str.append(chr(ord('0') + input_int % 10))
+        input_int //= 10
+    
+    result = ''.join(output_str)[::-1]
+    if is_negative:
+        result = '-' + result
+    return result
+
+# numb = 123520135201144
+# print(int_to_str(numb))
+# ========================================================================
+
+# convert string to int
+def str_to_int(input_str):
+    output_int = 0
+    if input_str[0] == '-':
+        start = 1
+        is_negative = True
+    else:
+        start = 0
+        is_negative = False
+    s_len = len(input_str)
+    for i in range(start, s_len):
+        nr = ord(input_str[i]) - ord('0')
+        output_int += nr * (10 ** (s_len - i - 1))
+    if is_negative:
+        return (-1 * output_int)
+    return output_int
+
+# convert = '12352013121'
+# convert = '-52013121'
+# convert = '01'
+# print(str_to_int(convert))
