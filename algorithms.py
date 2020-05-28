@@ -220,3 +220,271 @@ def is_palindrome_less(in_st):
 # ==================================================================
 
 # Check if is anagram
+s1 = 'fairy tales'
+s2 = 'rail safety'
+# s2 = 'rail safetyx'
+s1 = s1.replace(' ', '').lower()
+s2 = s2.replace(' ', '').lower()
+
+# requires n log n time
+# print( sorted(s1) == sorted(s2) )
+
+def is_anagram(s1, s2):
+    ht = {}
+
+    if len(s1) != len(s2):
+        return False
+
+    for i in s1:
+        if i in ht:
+            ht[i] += 1
+        else:
+            ht[i] = 1
+    for i in s2:
+        if i in ht:
+            ht[i] -= 1
+        else:
+            ht[i] = 1
+    for i in ht.values():
+        if i != 0:
+            return False
+    return True
+# print(is_anagram(s1, s2))
+# =======================================================================
+
+# Greedy Algorithms optimal Task 
+a = [6, 3, 5, 2, 7, 5]
+# lowest posible combintion number
+def lowest_posible(arr):
+    arr.sort()
+    result = []
+    for i in range(len(a)//2):
+        result.append(arr[i] + arr[-i-1])
+    return result
+# print(lowest_posible(a))
+# ========================================================================
+
+# Intersection of 2 sorted arrays
+a = [2, 3, 3, 5, 7, 11]
+b = [3, 3, 7, 15, 31]
+
+def intersect_array(a, b):
+    result = []
+    for i in a:
+        if i in b and i not in result:
+            result.append(i)
+    return result
+
+# ------------------------------------------------------------------
+
+def intersect_sorted_array(a, b):
+    i = 0
+    j = 0
+    intersection = []
+    while i < len(a) and j < len(b):
+        if a[i] == b[j]:
+            if i == 0 or a[i] != a[i-1]:
+                intersection.append(a[i])
+            i += 1
+            j += 1
+        elif a[i] < b[j]:
+            i += 1
+        else:
+            j += 1
+    return intersection
+
+# print(list(set(a).intersection(b)))
+# print(intersect_sorted_array(a, b))
+# =========================================================================
+
+# Palindrome Permutation
+palin_perm = 'Tact Coa!'
+palin_perm1 = 'Tact Coa'
+not_palin_perm = 'This is not a palindrome permutation'
+
+def palindrome_permutation(in_str):
+    in_str = in_str.replace(' ', '').lower()
+    result = {}
+    for i in in_str:
+        if i.isalnum() and i in result:
+            if result[i] > 0:
+                result[i] -= 1
+            else:
+                result[i] += 1
+        else:
+            result[i] = 1
+    c = 0
+    for i in result.values():
+        if i > 0:
+            c += 1
+        if c > 1:
+            return False
+    
+    return True
+
+# print(palindrome_permutation(palin_perm))
+# print(palindrome_permutation(palin_perm1))
+# =====================================================================
+
+is_perm1 = 'God'
+is_perm2 = 'dog'
+not_perm1 = 'Not'
+not_perm2 = 'top'
+
+# check permutation
+# O(n log n)
+def is_perm_1(s1, s2):
+    s1 = s1.lower()
+    s2 = s2.lower()
+
+    if len(s1) != len(s2):
+        return False
+    
+    s1 = ''.join(sorted(s1))
+    s2 = ''.join(sorted(s2))
+
+    n = len(s1)
+    for i in range(n):
+        if s1[i] != s2[i]:
+            return False
+    return True
+# ------------------------------------------
+# O(n)
+def is_perm_2(s1, s2):
+    s1 = s1.lower()
+    s2 = s2.lower()
+
+    if len(s1) != len(s2):
+        return False
+    
+    s1 = ''.join(sorted(s1))
+    s2 = ''.join(sorted(s2))
+
+    d = {}
+    for i in s1:
+        if i in d:
+            d[i] -= 1
+        else:
+            d[i] = 1
+    for i in s2:
+        if i in d:
+            d[i] -= 1
+        else:
+            d[i] = 1
+    return all(value == 0 for value in d.values())
+    
+# print(is_perm_1(is_perm1, is_perm2))
+# print(is_perm_1(not_perm1, not_perm2))
+# print(is_perm_2(is_perm1, is_perm2))
+# print(is_perm_2(not_perm1, not_perm2))
+# ==================================================================
+
+# Uniq characters
+unique_s = 'AbCDefG'
+non_unique = 'non Unique STR'
+def is_unique(in_str):
+    d = {}
+    in_str = in_str.replace(' ', '').lower()
+    for i in in_str:
+        if i in d:
+            return False
+        elif i.isalnum():
+            d[i] = 1
+    return True
+# ----------------------------------------------------------
+def is_unique_2(in_str):
+    return len(set(in_str)) == len(in_str)
+# ----------------------------------------------------------
+def is_unique_3(in_str):
+    in_str = in_str.lower()
+    alpha = 'abcdefghijklmnopqrstuvwxyz'
+
+    for i in in_str:
+        if i in alpha:
+            alpha = alpha.replace(i, '')
+        else:
+            return False
+    return True
+
+# print(is_unique_3(unique_s))
+# print(is_unique_3(non_unique))
+# =================================================================
+
+# Find closest number
+a = [1, 2, 4, 5, 6, 6, 8, 9]
+a1 = [2, 5, 6, 7, 8, 8, 9]
+def closest_num(ls, target):
+    min_dif = float('inf')
+    low = 0
+    high = len(ls) - 1
+    closest_n = None
+
+    if len(ls) == 0:
+        return None
+    if len(ls) == 1:
+        return ls[0]
+    
+    while low <= high:
+        mid = (low + high) // 2
+        if mid + 1 < len(ls):
+            min_dif_right = abs(ls[mid+1] - target)
+        if mid > 0:
+            min_dif_left = abs(ls[mid-1] - target)
+
+        if min_dif_left < min_dif:
+            min_dif = min_dif_left
+            closest_n = ls[mid - 1]
+        
+        if min_dif_right < min_dif:
+            min_dif = min_dif_right
+            closest_n = ls[mid + 1]
+        
+        if ls[mid] < target:
+            low = mid + 1
+        elif ls[mid] > target:
+            high = mid - 1
+        else:
+            return ls[mid]
+    return closest_n
+
+# print(closest_num(a, 11))
+# print(closest_num(a, -1))
+# print(closest_num(a1, 6))
+# ======================================================================
+
+# O(n)
+# find num which is on same index mumber
+a1 = [-10, -5, 0, 3, 7]
+a2 = [0, 2, 5, 8, 17]
+a3 = [-10, -5, 3, 4, 7, 9]
+
+def find_fixed_point_linear(ar):
+    ls = []
+    for idx, i in enumerate(ar):
+        if i == idx:
+            ls.append(i)
+    return ls
+# -----------------------------------------------
+
+# O(log n)
+# sorted list
+def find_fixed_point_binary(ar):
+    low = 0
+    high = len(ar) - 1
+    while low <= high:
+        mid = (low + high) // 2
+
+        if ar[mid] < mid:
+            low = mid + 1
+        elif ar[mid] > mid:
+            high = mid - 1
+        else:
+            return ar[mid]
+    return None
+# print(find_fixed_point_binary(a1))
+# print(find_fixed_point_binary(a2))
+# print(find_fixed_point_binary(a3))
+# ======================================================================
+
+# Find Bitonic Peak
+
